@@ -1,0 +1,4 @@
+<?php
+namespace Database\Seeders;
+use App\Models\User; use Illuminate\Database\Seeder; use Illuminate\Support\Facades\Hash;
+class UserSeeder extends Seeder { public function run(): void { foreach ([['name'=>'Administrator','email'=>'admin@gmail.com','password'=>'admin123','role'=>'admin','phone'=>'081234567890'],['name'=>'Petugas','email'=>'petugas@gmail.com','password'=>'petugas123','role'=>'petugas','phone'=>'081234567891'],['name'=>'Customer','email'=>'customer@gmail.com','password'=>'customer123','role'=>'customer','phone'=>'081234567892'],['name'=>'Customer Dua','email'=>'customer2@gmail.com','password'=>'customer123','role'=>'customer','phone'=>'081234567893']] as $data) { User::updateOrCreate(['email'=>$data['email']],['name'=>$data['name'],'phone'=>$data['phone'],'role'=>$data['role'],'password'=>Hash::make($data['password'])]); } } }
