@@ -1,4 +1,4 @@
-# Sistem Pengaduan Masyarakat
+# Sistem Pengaduan Restoran
 
 Aplikasi Laravel 12 untuk pengaduan masyarakat dengan role **admin**, **petugas**, dan **customer**. Antarmuka memakai Bootstrap 5 via CDN.
 
