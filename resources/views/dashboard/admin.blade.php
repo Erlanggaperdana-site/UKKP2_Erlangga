@@ -1,81 +1,34 @@
 @extends('layouts.app')
-@section('header', 'Dashboard Admin')
 @section('content')
-<div class="page-header mb-4">
-    <h1 class="page-title">Selamat datang kembali</h1>
-    <p class="page-subtitle">Berikut adalah ringkasan sistem pengaduan Anda.</p>
+<div class="mb-8">
+    <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Selamat datang kembali</h1>
+    <p class="text-sm text-slate-500 mt-1">Ringkasan aktivitas sistem pengaduan.</p>
 </div>
 
-<div class="row g-3 mb-4">
-    <div class="col-md-6 col-lg animate-fade-in animate-delay-1">
-        <div class="stat-card stat-card-blue h-100">
-            <div class="d-flex align-items-start justify-content-between">
-                <div>
-                    <div class="stat-label">Total User</div>
-                    <div class="stat-value">{{ $stats['users'] }}</div>
-                </div>
-                <div class="stat-icon stat-icon-blue">
-                    <i class="bi bi-people"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+@php
+$cards = [
+    ['label' => 'Total User', 'value' => $stats['users'], 'icon' => 'users'],
+    ['label' => 'Customer',   'value' => $stats['customers'], 'icon' => 'user-check'],
+    ['label' => 'Petugas',    'value' => $stats['petugas'], 'icon' => 'briefcase'],
+    ['label' => 'Admin',      'value' => $stats['admins'], 'icon' => 'shield'],
+    ['label' => 'Pengaduan',  'value' => $stats['pengaduans'], 'icon' => 'inbox'],
+];
+@endphp
 
-    <div class="col-md-6 col-lg animate-fade-in animate-delay-2">
-        <div class="stat-card stat-card-green h-100">
-            <div class="d-flex align-items-start justify-content-between">
-                <div>
-                    <div class="stat-label">Customer</div>
-                    <div class="stat-value">{{ $stats['customers'] }}</div>
-                </div>
-                <div class="stat-icon stat-icon-green">
-                    <i class="bi bi-person-check"></i>
-                </div>
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-8">
+    @foreach($cards as $c)
+    <div class="bg-white rounded-2xl border border-slate-200 p-5">
+        <div class="flex items-start justify-between gap-4">
+            <div>
+                <div class="text-xs font-medium tracking-wide uppercase text-slate-500">{{ $c['label'] }}</div>
+                <div class="text-2xl font-semibold tracking-tight text-slate-900 mt-2">{{ $c['value'] }}</div>
+            </div>
+            <div class="w-9 h-9 rounded-xl bg-slate-900 text-white grid place-items-center shrink-0">
+                <i data-feather="{{ $c['icon'] }}" class="w-4 h-4"></i>
             </div>
         </div>
     </div>
-
-    <div class="col-md-6 col-lg animate-fade-in animate-delay-3">
-        <div class="stat-card stat-card-amber h-100">
-            <div class="d-flex align-items-start justify-content-between">
-                <div>
-                    <div class="stat-label">Petugas</div>
-                    <div class="stat-value">{{ $stats['petugas'] }}</div>
-                </div>
-                <div class="stat-icon stat-icon-amber">
-                    <i class="bi bi-person-badge"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg animate-fade-in animate-delay-4">
-        <div class="stat-card stat-card-red h-100">
-            <div class="d-flex align-items-start justify-content-between">
-                <div>
-                    <div class="stat-label">Admin</div>
-                    <div class="stat-value">{{ $stats['admins'] }}</div>
-                </div>
-                <div class="stat-icon stat-icon-red">
-                    <i class="bi bi-lightning"></i>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="col-md-6 col-lg animate-fade-in animate-delay-5">
-        <div class="stat-card stat-card-purple h-100">
-            <div class="d-flex align-items-start justify-content-between">
-                <div>
-                    <div class="stat-label">Pengaduan</div>
-                    <div class="stat-value">{{ $stats['pengaduans'] }}</div>
-                </div>
-                <div class="stat-icon stat-icon-purple">
-                    <i class="bi bi-inboxes"></i>
-                </div>
-            </div>
-        </div>
-    </div>
+    @endforeach
 </div>
 
 @include('dashboard.recent')

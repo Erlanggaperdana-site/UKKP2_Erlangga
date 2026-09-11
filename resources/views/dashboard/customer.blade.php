@@ -1,32 +1,29 @@
 @extends('layouts.app')
-@section('header', 'Dashboard Customer')
 @section('content')
-<div class="page-header d-flex justify-content-between align-items-start flex-wrap gap-3 mb-4">
+<div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
     <div>
-        <h1 class="page-title">Dashboard Customer</h1>
-        <p class="page-subtitle">Kelola pengaduan Anda secara aman dan terpercaya.</p>
+        <h1 class="text-2xl font-semibold tracking-tight text-slate-900">Dashboard Customer</h1>
+        <p class="text-sm text-slate-500 mt-1">Pantau status pengaduan layanan restoran Anda.</p>
     </div>
-    <a href="{{ route('pengaduans.create') }}" class="btn btn-primary d-flex align-items-center">
-        <i class="bi bi-plus-lg me-2"></i>Buat Pengaduan
-    </a>
 </div>
 
-<div class="hero-card mb-4 animate-fade-in">
-    <div class="d-flex align-items-start justify-content-between position-relative z-1">
+<div class="bg-white rounded-2xl border border-slate-200 p-6 mb-6 shadow-sm">
+    <div class="flex items-start justify-between gap-6">
         <div>
-            <div class="hero-label">Total Pengaduan Saya</div>
-            <div class="hero-value">{{ $total }}</div>
-            <div class="hero-hint">Pengaduan yang telah Anda ajukan</div>
+            <div class="text-xs font-semibold tracking-wider uppercase text-slate-500">Total Pengaduan Saya</div>
+            <div class="text-3xl font-semibold tracking-tight text-slate-900 mt-2">{{ $total }}</div>
+            <div class="text-xs text-slate-500 mt-1">Pengaduan & masukan restoran yang telah Anda kirimkan</div>
         </div>
-        <div class="hero-icon">
-            <i class="bi bi-inboxes"></i>
+        <div class="w-10 h-10 rounded-xl bg-slate-900 text-white grid place-items-center shrink-0">
+            <i data-feather="inbox" class="w-5 h-5"></i>
         </div>
     </div>
 </div>
 
-<div class="content-card animate-fade-in animate-delay-1">
-    <div class="card-header">
-        Pengaduan Terbaru
+<div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+    <div class="px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+        <h3 class="text-sm font-semibold text-slate-900">Pengaduan Saya Terbaru</h3>
+        <a href="{{ route('pengaduans.index') }}" class="text-xs font-medium text-slate-600 hover:text-slate-900">Lihat semua →</a>
     </div>
     @include('pengaduans.table', ['pengaduans' => $pengaduans, 'simple' => true])
 </div>
