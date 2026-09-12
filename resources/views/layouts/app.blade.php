@@ -60,8 +60,8 @@
     {{-- Top Progress Loader (tetap ada) --}}
     <div id="page-loader" aria-hidden="true"></div>
     {{-- Center Screen Loader — modern pill, bukan spinner --}}
-    <div id="page-overlay" class="fixed inset-0 z-[9998] bg-white/75 backdrop-blur-[3px] flex items-center justify-center opacity-100" aria-hidden="true">
-        <div class="overlay-card bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-900/[0.07] px-5 py-4 flex items-center gap-4 min-w-[260px] max-w-[90vw]">
+    <div id="page-overlay" class="fixed inset-0 z-9998 bg-white/75 backdrop-blur-[3px] flex items-center justify-center opacity-100" aria-hidden="true">
+        <div class="overlay-card bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-900/[0.07] px-5 py-4 flex items-center gap-4 min-w-65 max-w-[90vw]">
             <div class="w-10 h-10 rounded-xl bg-slate-900 text-white grid place-items-center shrink-0 shadow-sm">
                 <i data-feather="coffee" class="w-5 h-5 text-orange-400"></i>
             </div>

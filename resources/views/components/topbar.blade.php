@@ -15,7 +15,7 @@
                 <p class="text-xs font-bold text-slate-900 leading-tight">{{ auth()->user()->name }}</p>
                 <p class="text-[11px] text-slate-500 capitalize leading-tight">{{ auth()->user()->role }}</p>
             </div>
-            <div class="w-8 h-8 rounded-full bg-gradient-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
+            <div class="w-8 h-8 rounded-full bg-linear-to-br from-blue-600 to-indigo-600 flex items-center justify-center text-white text-xs font-bold shadow-sm">
                 {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
             </div>
         </a>
