@@ -5,28 +5,26 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="RestoAduan — Pengaduan Pelanggan Restoran, sampaikan keluhan & masukan antar pelanggan dengan cepat">
     <title>{{ config('app.name', 'Pengaduan Restoran') }}</title>
+    <link rel="icon" type="image/png" href="/icon/icon.png">
 
-    {{-- Fonts --}}
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 
-    {{-- Tailwind CSS via CDN --}}
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                    },
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
                     colors: {
                         brand: {
-                            50: '#eff6ff',
-                            100: '#dbeafe',
-                            500: '#3b82f6',
-                            600: '#2563eb',
-                            700: '#1d4ed8',
+                            50: '{{ $tc["50"] }}',
+                            100: '{{ $tc["100"] }}',
+                            200: '{{ $tc["200"] }}',
+                            500: '{{ $tc["500"] }}',
+                            600: '{{ $tc["600"] }}',
+                            700: '{{ $tc["700"] }}',
                         }
                     }
                 }
@@ -34,10 +32,19 @@
         }
     </script>
 
-    {{-- Feather Icons via CDN --}}
     <script src="https://unpkg.com/feather-icons"></script>
 
     <style>
+        :root {
+            --c-50: {{ $tc["50"] }};
+            --c-100: {{ $tc["100"] }};
+            --c-200: {{ $tc["200"] }};
+            --c-500: {{ $tc["500"] }};
+            --c-600: {{ $tc["600"] }};
+            --c-700: {{ $tc["700"] }};
+            --sb-hover-bg: {{ $sidebarMode === 'dark' ? 'rgba(30,41,59,0.8)' : '#f1f5f9' }};
+            --sb-hover-text: {{ $sidebarMode === 'dark' ? '#f8fafc' : '#0f172a' }};
+        }
         @keyframes slideInRight { from { opacity:0; transform: translateX(20px); } to { opacity:1; transform: translateX(0); } }
         @keyframes scaleIn { from { opacity:0; transform: scale(0.96); } to { opacity:1; transform: scale(1); } }
         @keyframes shimmer { 0% { transform: translateX(-100%); } 100% { transform: translateX(200%); } }
@@ -54,89 +61,138 @@
             #page-loader, #page-overlay, #page-overlay .overlay-card { transition: none !important; }
             #page-loader::after, #page-overlay-bar { animation: none !important; }
         }
+
+        .btn-primary { background: var(--c-600); color: #fff; }
+        .btn-primary:hover { background: var(--c-700); }
+        .sidebar-link-active { background: var(--c-100); color: var(--c-700); }
+        .sidebar-link-active-dark { background: #fff; color: #0f172a; }
+        .accent-text { color: var(--c-600); }
+        .accent-bg { background: var(--c-600); }
+        .loader-bar { background: var(--c-600); }
+
+        .sb-link {
+            transition: background 0.15s, color 0.15s;
+        }
+        .sb-link:hover {
+            background: var(--sb-hover-bg) !important;
+            color: var(--sb-hover-text) !important;
+        }
+        .sb-link:hover i {
+            color: var(--sb-hover-text) !important;
+        }
+        .sb-icon-btn {
+            transition: background 0.15s, color 0.15s;
+        }
+        .sb-icon-btn:hover {
+            background: var(--sb-hover-bg) !important;
+            color: var(--sb-hover-text) !important;
+        }
     </style>
 </head>
-<body class="font-sans antialiased text-sm bg-slate-50 min-h-screen flex flex-col selection:bg-brand-100 selection:text-brand-700">
-    {{-- Top Progress Loader (tetap ada) --}}
+<body class="font-sans antialiased text-sm bg-slate-50 min-h-screen flex flex-col">
     <div id="page-loader" aria-hidden="true"></div>
-    {{-- Center Screen Loader — modern pill, bukan spinner --}}
     <div id="page-overlay" class="fixed inset-0 z-9998 bg-white/75 backdrop-blur-[3px] flex items-center justify-center opacity-100" aria-hidden="true">
         <div class="overlay-card bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-900/[0.07] px-5 py-4 flex items-center gap-4 min-w-65 max-w-[90vw]">
-            <div class="w-10 h-10 rounded-xl bg-slate-900 text-white grid place-items-center shrink-0 shadow-sm">
-                <i data-feather="coffee" class="w-5 h-5 text-orange-400"></i>
+            <div class="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm">
+                <img src="/icon/icon.png" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-slate-900 leading-none">Memuat Pengaduan Restoran</p>
                 <p class="text-xs text-slate-500 mt-1">Menyiapkan halaman…</p>
                 <div class="mt-3 h-1.5 rounded-full bg-slate-100 overflow-hidden">
-                    <div id="page-overlay-bar" class="h-full w-2/3 rounded-full bg-slate-900"></div>
+                    <div id="page-overlay-bar" class="h-full w-2/3 rounded-full loader-bar"></div>
                 </div>
             </div>
         </div>
     </div>
-    {{-- Global Toast Alert — selalu di pojok kanan atas viewport --}}
     @include('partials.alert')
 
     @auth
+    @php
+        $isDarkSidebar = $sidebarMode === 'dark';
+        $sbBg = $isDarkSidebar ? '#0f172a' : '#ffffff';
+        $sbBorder = $isDarkSidebar ? '#1e293b' : '#e2e8f0';
+        $sbText = $isDarkSidebar ? '#cbd5e1' : '#475569';
+        $sbTextMuted = $isDarkSidebar ? '#64748b' : '#94a3b8';
+        $sbHeading = $isDarkSidebar ? '#64748b' : '#94a3b8';
+        $sbTitle = $isDarkSidebar ? '#ffffff' : '#0f172a';
+        $sbSub = $isDarkSidebar ? '#94a3b8' : '#64748b';
+        $sbActiveBg = $isDarkSidebar ? '#ffffff' : $tc['100'];
+        $sbActiveText = $isDarkSidebar ? '#0f172a' : $tc['700'];
+        $sbActiveIcon = $isDarkSidebar ? '#334155' : $tc['600'];
+        $sbHoverBg = $isDarkSidebar ? 'rgba(30,41,59,0.8)' : '#f1f5f9';
+        $sbHoverText = $isDarkSidebar ? '#f8fafc' : '#0f172a';
+        $sbFooterBorder = $isDarkSidebar ? '#1e293b' : '#e2e8f0';
+        $sbIconColor = $isDarkSidebar ? '#64748b' : '#94a3b8';
+        $sbActiveShadow = $isDarkSidebar ? '0 1px 3px rgba(0,0,0,0.1)' : '0 1px 3px rgba(0,0,0,0.06)';
+    @endphp
     <div x-data="{ sidebarOpen: false, logoutOpen: false }" class="flex h-screen overflow-hidden bg-slate-50">
-        {{-- Mobile Overlay --}}
         <div x-show="sidebarOpen" x-transition.opacity class="fixed inset-0 z-20 bg-slate-900/50 lg:hidden" @click="sidebarOpen = false"></div>
 
         {{-- Sidebar --}}
-        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'" class="fixed inset-y-0 left-0 z-30 w-64 px-4 py-6 overflow-y-auto transition-transform duration-300 bg-slate-900 lg:translate-x-0 lg:static lg:inset-0 border-r border-slate-800 flex flex-col">
+        <aside :class="sidebarOpen ? 'translate-x-0' : '-translate-x-full'"
+               class="fixed inset-y-0 left-0 z-30 w-64 px-4 py-6 overflow-y-auto transition-transform duration-300 lg:translate-x-0 lg:static lg:inset-0 border-r flex flex-col"
+               style="background:{{ $sbBg }};border-color:{{ $sbBorder }}">
             <div class="flex items-center justify-between mb-8 px-2">
                 <a href="{{ route('dashboard') }}" class="flex items-center gap-3 group">
-                    <div class="flex items-center justify-center w-8 h-8 rounded-lg bg-orange-500 text-white shadow-sm group-hover:bg-orange-400 transition-colors">
-                        <i data-feather="coffee" class="w-4 h-4"></i>
+                    <div class="w-8 h-8 rounded-lg overflow-hidden shadow-sm shrink-0">
+                        <img src="/icon/icon.png" alt="Logo" class="w-full h-full object-cover">
                     </div>
                     <div class="leading-none">
-                        <span class="text-sm font-bold text-white tracking-tight block">Pengaduan Restoran</span>
-                        <span class="text-[11px] font-medium text-slate-400 tracking-wide">Pengaduan Restoran</span>
+                        <span class="text-sm font-bold tracking-tight block" style="color:{{ $sbTitle }}">Pengaduan Restoran</span>
+                        <span class="text-[11px] font-medium tracking-wide" style="color:{{ $sbSub }}">Pengaduan Restoran</span>
                     </div>
                 </a>
             </div>
 
             <nav class="flex-1 space-y-1">
-                <p class="px-3 text-xs font-semibold tracking-wider text-slate-500 uppercase mb-2 mt-4">Utama</p>
+                <p class="px-3 text-xs font-semibold tracking-wider uppercase mb-2 mt-4" style="color:{{ $sbHeading }}">Utama</p>
 
-                <a href="{{ route('dashboard') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('dashboard') ? 'bg-white text-slate-900 font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                    <i data-feather="grid" class="w-4 h-4 {{ request()->routeIs('dashboard') ? 'text-slate-700' : 'text-slate-400' }}"></i>
-                    <span class="font-medium">Dashboard</span>
-                </a>
-
-                @if(!auth()->user()->isCustomer())
-                <a href="{{ route('users.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('users.*') ? 'bg-white text-slate-900 font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                    <i data-feather="users" class="w-4 h-4 {{ request()->routeIs('users.*') ? 'text-slate-700' : 'text-slate-400' }}"></i>
-                    <span class="font-medium">{{ auth()->user()->isAdmin() ? 'Manajemen User' : 'Data Customer' }}</span>
-                </a>
-                @endif
-
-                <a href="{{ route('pengaduans.index') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('pengaduans.*') ? 'bg-white text-slate-900 font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                    <i data-feather="inbox" class="w-4 h-4 {{ request()->routeIs('pengaduans.*') ? 'text-slate-700' : 'text-slate-400' }}"></i>
-                    <span class="font-medium">{{ auth()->user()->isCustomer() ? 'Pengaduan Saya' : 'Pengaduan Masuk' }}</span>
-                </a>
-
-                <p class="px-3 text-xs font-semibold tracking-wider text-slate-500 uppercase mb-2 mt-6">Akun</p>
-
-                <a href="{{ route('profile.show') }}" class="flex items-center gap-3 px-3 py-2 rounded-lg transition-colors {{ request()->routeIs('profile.*') ? 'bg-white text-slate-900 font-semibold shadow-sm' : 'text-slate-300 hover:bg-slate-800 hover:text-white' }}">
-                    <i data-feather="user" class="w-4 h-4 {{ request()->routeIs('profile.*') ? 'text-slate-700' : 'text-slate-400' }}"></i>
-                    <span class="font-medium">Profil</span>
-                </a>
+                @php
+                    $routes = [
+                        ['route' => 'dashboard',   'name' => 'Dashboard',   'icon' => 'grid',     'is' => request()->routeIs('dashboard')],
+                        ['route' => 'users.index',  'name' => auth()->user()->isAdmin() ? 'Manajemen User' : 'Data Customer', 'icon' => 'users',    'is' => request()->routeIs('users.*'), 'hide' => auth()->user()->isCustomer()],
+                        ['route' => 'pengaduans.index', 'name' => auth()->user()->isCustomer() ? 'Pengaduan Saya' : 'Pengaduan Masuk', 'icon' => 'inbox', 'is' => request()->routeIs('pengaduans.*')],
+                    ];
+                @endphp
+                @foreach($routes as $r)
+                    @if(!($r['hide'] ?? false))
+                    <a href="{{ route($r['route']) }}"
+                       @if($r['is'])
+                           @if($isDarkSidebar)
+                               style="background:#fff;color:#0f172a;font-weight:600;box-shadow:0 1px 3px rgba(0,0,0,0.1)"
+                           @else
+                               style="background:{{ $tc['100'] }};color:{{ $tc['700'] }};font-weight:600"
+                           @endif
+                       @endif
+                       class="sb-link flex items-center gap-3 px-3 py-2 rounded-lg"
+                       @unless($r['is'])style="color:{{ $sbText }}"@endunless>
+                        <i data-feather="{{ $r['icon'] }}" class="w-4 h-4"
+                           style="color:{{ $r['is'] ? ($isDarkSidebar ? '#475569' : $tc['600']) : $sbIconColor }}"></i>
+                        <span class="font-medium">{{ $r['name'] }}</span>
+                    </a>
+                    @endif
+                @endforeach
             </nav>
 
-            <div class="pt-4 mt-6 border-t border-slate-800">
-                <button @click="logoutOpen = true" type="button" class="flex items-center w-full gap-3 px-3 py-2.5 rounded-xl text-red-400 hover:text-red-300 hover:bg-red-500/10 border border-transparent hover:border-red-500/20 transition-colors text-left">
-                    <span class="w-8 h-8 rounded-lg bg-red-500/15 border border-red-500/20 grid place-items-center shrink-0">
-                        <i data-feather="log-out" class="w-4 h-4"></i>
-                    </span>
-                    <span class="font-semibold text-sm">Keluar</span>
-                </button>
+            <div class="pt-4 mt-6 border-t" style="border-color:{{ $sbFooterBorder }}">
+                <div class="flex items-center gap-2">
+                    <a href="{{ route('settings.index') }}" title="Pengaturan"
+                       class="sb-icon-btn flex items-center justify-center w-10 h-10 rounded-xl"
+                       style="color:{{ $sbIconColor }}">
+                        <i data-feather="settings" class="w-[18px] h-[18px]"></i>
+                    </a>
+                    <button @click="logoutOpen = true" type="button" title="Keluar"
+                            class="sb-icon-btn flex items-center justify-center flex-1 h-10 rounded-xl"
+                            style="color:#f87171">
+                        <i data-feather="log-out" class="w-[18px] h-[18px]"></i>
+                    </button>
+                </div>
             </div>
         </aside>
 
-        {{-- Main Content Wrapper --}}
+        {{-- Main Content --}}
         <div class="flex flex-col flex-1 w-full overflow-hidden">
-            {{-- Topbar --}}
             <header class="flex items-center justify-between px-6 py-4 bg-white border-b border-slate-200">
                 <div class="flex items-center gap-4">
                     <button @click="sidebarOpen = true" class="text-slate-500 hover:text-slate-700 focus:outline-none lg:hidden">
@@ -144,21 +200,23 @@
                     </button>
                     <h2 class="hidden sm:block text-sm font-medium text-slate-500">Pengaduan Pelanggan Restoran</h2>
                 </div>
-
                 <div class="flex items-center gap-4">
-                    <a href="{{ route('profile.show') }}" class="flex items-center gap-3 hover:bg-slate-50 px-3 py-1.5 rounded-full transition-colors border border-transparent hover:border-slate-200">
+                    <a href="{{ route('settings.index') }}" class="flex items-center gap-3 hover:bg-slate-50 px-3 py-1.5 rounded-full transition-colors border border-transparent hover:border-slate-200">
                         <div class="text-right hidden sm:block">
                             <p class="text-sm font-semibold text-slate-700 leading-tight">{{ auth()->user()->name }}</p>
                             <p class="text-xs text-slate-500 capitalize leading-tight">{{ auth()->user()->role }}</p>
                         </div>
-                        <div class="flex items-center justify-center w-8 h-8 rounded-full bg-slate-900 text-white font-bold text-xs shadow-sm">
-                            {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
-                        </div>
+                        @if(auth()->user()->hasAvatar())
+                            <img src="{{ auth()->user()->getAvatarUrl() }}" alt="Avatar" class="w-8 h-8 rounded-full object-cover shadow-sm border border-slate-200">
+                        @else
+                            <div class="flex items-center justify-center w-8 h-8 rounded-full text-white font-bold text-xs shadow-sm accent-bg">
+                                {{ strtoupper(substr(auth()->user()->name, 0, 1)) }}
+                            </div>
+                        @endif
                     </a>
                 </div>
             </header>
 
-            {{-- Main Content --}}
             <main class="flex-1 overflow-y-auto bg-slate-50 p-4 sm:p-6 lg:p-8">
                 <div class="max-w-6xl mx-auto space-y-6">
                     @yield('content')
@@ -166,7 +224,7 @@
             </main>
         </div>
 
-        {{-- Logout Confirmation Modal --}}
+        {{-- Logout Modal --}}
         <div x-show="logoutOpen" x-transition.opacity class="fixed inset-0 z-50 flex items-center justify-center p-4" style="display:none;">
             <div @click="logoutOpen = false" class="absolute inset-0 bg-slate-900/60 backdrop-blur-sm"></div>
             <div x-show="logoutOpen" x-transition:enter="transition ease-out duration-200" x-transition:enter-start="opacity-0 scale-95" x-transition:enter-end="opacity-100 scale-100" x-transition:leave="transition ease-in duration-150" x-transition:leave-start="opacity-100 scale-100" x-transition:leave-end="opacity-0 scale-95" class="relative bg-white rounded-2xl shadow-xl border border-slate-200 w-full max-w-sm overflow-hidden animate-scale-in">
@@ -190,7 +248,6 @@
         </div>
     </div>
     @else
-    {{-- Guest / Auth Page --}}
     <main class="min-h-screen flex items-center justify-center p-4 bg-slate-50 sm:bg-slate-100">
         <div class="w-full max-w-md">
             @yield('content')
@@ -198,10 +255,7 @@
     </main>
     @endauth
 
-    {{-- Alpine JS --}}
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
-
-    {{-- Initialize Feather Icons & Loaders — semua easing dibuat extra smooth --}}
     <script>
         (function(){
             var EASE = 'cubic-bezier(0.16,1,0.3,1)';

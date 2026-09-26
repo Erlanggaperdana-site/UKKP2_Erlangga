@@ -32,8 +32,8 @@
     <div id="page-loader" aria-hidden="true"></div>
     <div id="page-overlay" class="fixed inset-0 z-[9998] bg-white/75 backdrop-blur-[3px] flex items-center justify-center opacity-100" aria-hidden="true">
         <div class="overlay-card bg-white rounded-2xl border border-slate-200 shadow-xl shadow-slate-900/[0.07] px-5 py-4 flex items-center gap-4 min-w-65 max-w-[90vw]">
-            <div class="w-10 h-10 rounded-xl bg-slate-900 text-white grid place-items-center shrink-0 shadow-sm">
-                <i data-feather="coffee" class="w-5 h-5 text-orange-400"></i>
+            <div class="w-10 h-10 rounded-xl overflow-hidden shrink-0 shadow-sm">
+                <img src="/icon/icon.png" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div class="flex-1 min-w-0">
                 <p class="text-sm font-semibold text-slate-900 leading-none">Memuat RestoAduan</p>
@@ -46,8 +46,8 @@
     </div>
     <header class="w-full max-w-6xl mx-auto px-6 py-5 flex items-center justify-between border-b border-slate-100">
         <div class="flex items-center gap-3">
-            <div class="w-9 h-9 rounded-xl bg-slate-900 text-white grid place-items-center font-bold shadow-sm">
-                <i data-feather="coffee" class="w-5 h-5 text-orange-400"></i>
+            <div class="w-9 h-9 rounded-xl overflow-hidden shadow-sm shrink-0">
+                <img src="/icon/icon.png" alt="Logo" class="w-full h-full object-cover">
             </div>
             <div>
                 <span class="text-base font-bold tracking-tight block leading-tight">RestoAduan</span>

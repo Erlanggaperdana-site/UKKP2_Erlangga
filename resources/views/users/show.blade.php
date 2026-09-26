@@ -11,7 +11,11 @@
 
     <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden">
         <div class="px-6 sm:px-8 py-6 border-b border-slate-200 flex items-center gap-4">
-            <div class="w-12 h-12 rounded-full bg-slate-900 text-white grid place-items-center font-semibold shrink-0">{{ strtoupper(substr($user->name,0,1)) }}</div>
+            @if($user->hasAvatar())
+                <img src="{{ $user->getAvatarUrl() }}" alt="Avatar" class="w-12 h-12 rounded-full object-cover shrink-0 border border-slate-200">
+            @else
+                <div class="w-12 h-12 rounded-full bg-slate-900 text-white grid place-items-center font-semibold shrink-0">{{ strtoupper(substr($user->name,0,1)) }}</div>
+            @endif
             <div class="min-w-0">
                 <div class="text-base font-semibold text-slate-900 truncate">{{ $user->name }}</div>
                 <div class="flex items-center gap-2 mt-1 flex-wrap">

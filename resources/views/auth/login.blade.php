@@ -2,8 +2,8 @@
 @section('content')
 <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-8">
     <div class="text-center mb-8">
-        <div class="inline-flex items-center justify-center w-11 h-11 rounded-xl bg-slate-900 text-white mb-4 shadow-sm">
-            <i data-feather="coffee" class="w-5 h-5 text-orange-400"></i>
+        <div class="inline-flex items-center justify-center w-11 h-11 rounded-xl overflow-hidden mb-4 shadow-sm">
+            <img src="/icon/icon.png" alt="Logo" class="w-full h-full object-cover">
         </div>
         <h1 class="text-[22px] font-semibold tracking-tight text-slate-900">Selamat datang</h1>
         <p class="text-sm text-slate-500 mt-1.5">Masuk ke Dashboard — Pengaduan Restoran</p>

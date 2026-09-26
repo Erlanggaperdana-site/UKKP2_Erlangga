@@ -23,6 +23,8 @@ class User extends Authenticatable
         'phone',
         'role',
         'password',
+        'settings',
+        'avatar',
     ];
 
     /**
@@ -45,6 +47,7 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'settings' => 'array',
         ];
     }
 
@@ -56,4 +59,30 @@ class User extends Authenticatable
     public function isAdmin(): bool { return $this->role === 'admin'; }
     public function isPetugas(): bool { return $this->role === 'petugas'; }
     public function isCustomer(): bool { return $this->role === 'customer'; }
+
+    public function getSetting(string $key, mixed $default = null): mixed
+    {
+        return data_get($this->settings, $key, $default);
+    }
+
+    public function getAvatarUrl(): string
+    {
+        if ($this->avatar && \Storage::disk('public')->exists('avatars/' . $this->avatar)) {
+            return asset('storage/avatars/' . $this->avatar);
+        }
+        return '';
+    }
+
+    public function hasAvatar(): bool
+    {
+        return $this->avatar && \Storage::disk('public')->exists('avatars/' . $this->avatar);
+    }
+
+    public static function defaultSettings(): array
+    {
+        return [
+            'theme_color' => 'slate',
+            'sidebar_mode' => 'dark',
+        ];
+    }
 }

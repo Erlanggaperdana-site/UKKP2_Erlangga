@@ -57,7 +57,11 @@
                 <tr class="hover:bg-slate-50/70 transition-colors">
                     <td class="px-5 py-4">
                         <div class="flex items-center gap-3">
-                            <div class="w-8 h-8 rounded-full bg-slate-900 text-white grid place-items-center text-xs font-semibold shrink-0">{{ strtoupper(substr($user->name,0,1)) }}</div>
+                            @if($user->hasAvatar())
+                                <img src="{{ $user->getAvatarUrl() }}" alt="Avatar" class="w-8 h-8 rounded-full object-cover shrink-0 border border-slate-200">
+                            @else
+                                <div class="w-8 h-8 rounded-full bg-slate-900 text-white grid place-items-center text-xs font-semibold shrink-0">{{ strtoupper(substr($user->name,0,1)) }}</div>
+                            @endif
                             <div class="min-w-0">
                                 <div class="text-sm font-medium text-slate-900 truncate">{{ $user->name }}</div>
                                 <div class="text-xs text-slate-500 font-mono">#{{ str_pad($user->id,4,'0', STR_PAD_LEFT) }}</div>

@@ -70,7 +70,7 @@
         <mxCell id="lMvgn4sojevmVgF-CW3n-49" parent="lMvgn4sojevmVgF-CW3n-7" style="ellipse;html=1;shape=endState;fillColor=#000000;strokeColor=#ff0000;" value="" vertex="1">
           <mxGeometry height="30" width="30" x="110" y="1100" as="geometry" />
         </mxCell>
-        <mxCell id="lMvgn4sojevmVgF-CW3n-8" parent="lMvgn4sojevmVgF-CW3n-6" style="swimlane;startSize=20;html=1;" value="Lane 2" vertex="1">
+        <mxCell id="lMvgn4sojevmVgF-CW3n-8" parent="lMvgn4sojevmVgF-CW3n-6" style="swimlane;startSize=20;html=1;" value="Sistem" vertex="1">
           <mxGeometry height="1170" width="430" x="270" y="20" as="geometry" />
         </mxCell>
         <mxCell id="lMvgn4sojevmVgF-CW3n-34" edge="1" parent="lMvgn4sojevmVgF-CW3n-8" source="lMvgn4sojevmVgF-CW3n-29" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" target="lMvgn4sojevmVgF-CW3n-33" value="">
